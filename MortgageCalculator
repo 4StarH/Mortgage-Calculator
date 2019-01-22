@@ -1,0 +1,138 @@
+/* Mortgage Calculator in Java!
+ * Built By Forrester Hinds 
+ */
+import java.text.DecimalFormat;
+import java.util.Scanner;
+
+public class MortgageCalculator {
+
+	public static void main(String[] args) {
+
+		
+		double term; //length of the mortgage.
+		double interest; //interest quoted on the mortgage.
+		double cost; //price of the home after down payment.
+		double payment; //interval at which payments are to be made.
+		double interestPeriod; //the interval at which the interest compounds.
+		
+		
+		Scanner input = new Scanner(System.in);
+		
+		System.out.println(" Hello and Welcome to the Mortgage Calculator\n       Created by Forrester Hinds");
+		System.out.println("=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=\n");
+		
+		//prompting user for amount borrowed on the mortgage.
+		
+		System.out.println("Please enter the amount you are borrowing.\n");
+		cost = input.nextDouble();
+		
+		while(cost <= 0) {
+			
+			System.out.println("Oops, you have to borrow a number greater than 0.");
+			System.out.println("Please enter the amount you are borrowing.\n");
+			cost = input.nextDouble();
+			
+		}
+		
+		//prompting user for interest rate.
+		
+		System.out.println("Please enter your interest rate out of 100%.\n");
+		interest = input.nextDouble();
+		
+		while(interest < 0) {
+			
+			System.out.println("Error. I don't think your bank is giving you money to borrow from them...");
+			System.out.println("Please enter your interest rate out of 100%.\n");
+			interest = input.nextDouble();
+			
+		}
+		
+		//prompting user for the term of their mortgage.
+		
+		System.out.println("Please enter the term (aka length) of your mortgage.\n");
+		term = input.nextDouble();
+		
+		while(term <=0) {
+			
+			System.out.println("Shouldn't you have more time than that to pay the money back?");
+			System.out.println("Please enter the term (aka length) of your mortgage.\n");
+			term = input.nextDouble();
+				
+		}
+		
+		double months = (term * 12);
+		
+		//prompting user for the payment interval
+		
+		System.out.println("Please enter your payment interval.\nEnter Weekly (1), Bi-Weekly (2), or Monthly (3)\n");
+		payment = input.nextInt();
+		
+		while (payment != 1 && payment != 2 && payment != 3) {
+			
+			System.out.println("Oops, please enter your payment interval.1\nEnter Weekly (1), Bi-Weekly (2), or Monthly (3)\n");
+			payment = input.nextInt();
+			
+		}
+		
+		//prompting user for the period which the interest compounds in.
+		
+		System.out.println("Please enter the period by which your interest compounds.\nChoose between: Monthly (1), Semi-Annually (2), or Annually (3)\n");
+		interestPeriod = input.nextInt();
+		
+		while (interestPeriod != 1 && interestPeriod != 2 && interestPeriod != 3) {
+			
+			System.out.println("Error. Please enter the period by which your interest compounds.\nChoose between: Monthly (1), Semi-Annually (2), or Annually (3)\n");
+			interestPeriod = input.nextInt();
+		}
+		
+		double irate;
+		
+		if (interestPeriod == 1) {
+			
+			irate = 12.0;	
+			
+		} else if (interestPeriod == 2) {
+			
+			irate = 2.0;
+			
+		} else {
+			
+			irate = 1.0;
+			
+		}
+				
+		System.out.println("\n");
+		
+		double i = ((interest / 100.0) / irate); //taking the annual rate and dividing it by the number of times it compounds in a year.
+		double a = (1 + i);
+		
+		double t;
+		String period;
+		if (payment == 1) {
+			
+			t = (months * 4);
+			period = "Week";
+			
+		} else if (payment == 2) {
+			
+			t = (months * 2);
+			period = "two Weeks";
+			
+		} else {
+			
+			t = months;
+			period = "Month";
+			
+		}
+		
+		double amount = (i * (Math.pow(a, t)));
+		double divide = (Math.pow(a, t) -1);
+		double answer = cost * (amount / divide);
+		
+		DecimalFormat numberFormat = new DecimalFormat("#.000"); //limiting the number to 3 decimal places.
+		
+		System.out.println("Your Payment is: $" + numberFormat.format(answer) + " every " + period + ".");
+		
+	}//end of main
+
+}//end of class
